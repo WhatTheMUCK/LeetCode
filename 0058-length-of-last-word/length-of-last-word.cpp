@@ -6,4 +6,5 @@ public:
         while (input >> in);
         return in.size();
     }
+    // Проверка 5
 };
