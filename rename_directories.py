@@ -28,7 +28,8 @@ def rename_directories(path):
                     else:
                         print(f"Directory '{full_dir_path}' is already renamed")
                 else:
-                    print(f"Directory '{full_dir_path}' does not exist")
+                    pass
+                    # print(f"Directory '{full_dir_path}' does not exist")
 
 if __name__ == '__main__':
     rename_directories('.')
