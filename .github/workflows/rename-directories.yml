@@ -20,12 +20,15 @@ jobs:
       - name: Rename directories
         run: python rename_directories.py
 
+      - name: Pull latest changes
+        run: git pull origin main
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
           git commit -m "Automatically rename directories" || echo "No changes to commit"
-          git push --set-upstream origin HEAD --force
+          git push
         env:
           GITHUB_TOKEN: ${{ secrets.MY_PERSONAL_TOKEN }}
