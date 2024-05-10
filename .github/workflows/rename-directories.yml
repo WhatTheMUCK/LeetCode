@@ -3,50 +3,45 @@ name: Rename Directories
 on:
   push:
     branches:
-      - main  # Указывайте нужную ветку
+      - main  # Замените 'main' на имя вашей рабочей ветки, если оно отличается
 
 jobs:
-  rename-directories:
+  rename:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
+      - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Для работы с историей
 
-      - name: Install Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Add leading zeros to directory names
+      - name: Rename directories
         run: |
-          python -c "import os; import re; from git import Repo; \
-          repo = Repo('.'); \
-          assert not repo.bare; \
-          dirs = []; \
-          for root, dirnames, _ in os.walk('.'): \
-            for dirname in dirnames: \
-              full_path = os.path.join(root, dirname); \
-              if re.match(r'^\d+-', os.path.basename(full_path)): \
-                dirs.append(full_path); \
-          def add_leading_zeros(dirname): \
-            basename = os.path.basename(dirname); \
-            parts = basename.split('-'); \
-            number = parts[0]; \
-            padded_number = f'{int(number):03d}'; \
-            new_dirname = padded_number + '-' + '-'.join(parts[1:]); \
-            full_new_dirname = os.path.join(os.path.dirname(dirname), new_dirname); \
-            os.rename(dirname, full_new_dirname); \
-            return full_new_dirname; \
-          for d in dirs: \
-            new_name = add_leading_zeros(d); \
-            print(f'Renamed {d} to {new_name}'); \
-            repo.git.add(new_name); \
-            repo.git.rm(d); \
-          if dirs: \
-            repo.git.commit('-m', 'Automatically renamed directories to include leading zeros'); \
-            repo.git.push();"
-      
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          import os
+          import re
+
+          def rename_directories(path):
+              for dir_name in os.listdir(path):
+                  full_dir_path = os.path.join(path, dir_name)
+                  if os.path.isdir(full_dir_path):
+                      match = re.match(r'^(\d+)(-.*)$', dir_name)
+                      if match:
+                          number_part = match.group(1)
+                          rest_part = match.group(2)
+                          new_number_part = number_part.zfill(4)
+                          new_dir_name = f"{new_number_part}{rest_part}"
+                          new_full_dir_path = os.path.join(path, new_dir_name)
+                          os.rename(full_dir_path, new_full_dir_path)
+                          print(f"Renamed '{full_dir_path}' to '{new_full_dir_path}'")
+
+          rename_directories('.')
+        
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "Automatically rename directories" || echo "No changes to commit"
+          git push
