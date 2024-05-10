@@ -40,7 +40,6 @@ jobs:
             os.rename(dirname, full_new_dirname); \
             return full_new_dirname; \
           for d in dirs: \
-            print(f'Processing directory: {d}'); \
             new_name = add_leading_zeros(d); \
             print(f'Renamed {d} to {new_name}'); \
             repo.git.add(new_name); \
