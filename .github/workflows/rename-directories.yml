@@ -21,7 +21,10 @@ jobs:
         run: python rename_directories.py
 
       - name: Pull latest changes
-        run: git pull origin main
+        run: |
+          git pull origin main
+          git add .
+          git commit -m "Зафиксированные незафиксированные изменения"
 
       - name: Commit changes
         run: |
