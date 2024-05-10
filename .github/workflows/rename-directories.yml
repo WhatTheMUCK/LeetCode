@@ -1,0 +1,50 @@
+name: Rename Directories
+
+on:
+  push:
+    branches:
+      - main  # Указывайте нужную ветку
+
+jobs:
+  rename-directories:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Для работы с историей
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Add leading zeros to directory names
+        run: |
+          import os
+          import re
+          from git import Repo
+
+          repo = Repo('.')
+          assert not repo.bare
+          dirs = [d for d in os.listdir('.') if os.path.isdir(d) and re.match(r'^\d+-', d)]
+
+          def add_leading_zeros(dirname):
+              parts = dirname.split('-')
+              number = parts[0]
+              padded_number = f'{int(number):03d}'  # Подгонка под три цифры, измените при необходимости
+              new_dirname = padded_number + '-' + '-'.join(parts[1:])
+              os.rename(dirname, new_dirname)
+              return new_dirname
+
+          for d in dirs:
+              new_name = add_leading_zeros(d)
+              repo.git.add(new_name)
+              repo.git.rm(d)
+
+          if dirs:
+              repo.git.commit('-m', 'Automatically renamed directories to include leading zeros')
+              repo.git.push()
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
