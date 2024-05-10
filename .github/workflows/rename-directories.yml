@@ -20,6 +20,11 @@ jobs:
       - name: Rename directories
         run: python rename_directories.py
 
+      - name: Add untracked files
+        run: |
+          git add .
+          git status  # Optional: just to verify changes
+          
       - name: Pull latest changes
         run: |
           git config --global --add safe.directory '*'
