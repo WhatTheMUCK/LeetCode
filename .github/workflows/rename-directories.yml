@@ -29,24 +29,28 @@ jobs:
           assert not repo.bare
           dirs = []
           for root, dirnames, _ in os.walk('.'):
-              for dirname in dirnames:
-                  if re.match(r'^\d+-', dirname):
-                      dirs.append(os.path.join(root, dirname))
+            for dirname in dirnames:
+                full_path = os.path.join(root, dirname)
+                if re.match(r'^\d+-', os.path.basename(full_path)):  # Используйте basename для сравнения
+                    dirs.append(full_path)
+
       
           def add_leading_zeros(dirname):
-              basename = os.path.basename(dirname)
-              parts = basename.split('-')
-              number = parts[0]
-              padded_number = f'{int(number):03d}'  # Adjust zero-padding as needed
-              new_dirname = padded_number + '-' + '-'.join(parts[1:])
-              full_new_dirname = os.path.join(os.path.dirname(dirname), new_dirname)
-              os.rename(dirname, full_new_dirname)
-              return full_new_dirname
+            basename = os.path.basename(dirname)
+            parts = basename.split('-')
+            number = parts[0]
+            padded_number = f'{int(number):03d}'  # Adjust zero-padding as needed
+            new_dirname = padded_number + '-' + '-'.join(parts[1:])
+            full_new_dirname = os.path.join(os.path.dirname(dirname), new_dirname)
+            os.rename(dirname, full_new_dirname)
+            return full_new_dirname
       
           for d in dirs:
-              new_name = add_leading_zeros(d)
-              repo.git.add(new_name)
-              repo.git.rm(d)
+            print(f"Processing directory: {d}")
+            new_name = add_leading_zeros(d)
+            print(f"Renamed {d} to {new_name}")
+            repo.git.add(new_name)
+            repo.git.rm(d)
       
           if dirs:
               repo.git.commit('-m', 'Automatically renamed directories to include leading zeros')
