@@ -16,13 +16,17 @@ def rename_directories(path):
 
                 # Проверить существование исходной директории
                 if os.path.exists(full_dir_path):
-                    # Удалить все файлы из новой директории
-                    if os.path.exists(new_full_dir_path):
-                        shutil.rmtree(new_full_dir_path)
+                    # Проверить, что исходная и целевая директории различаются
+                    if full_dir_path != new_full_dir_path:
+                        # Удалить все файлы из новой директории
+                        if os.path.exists(new_full_dir_path):
+                            shutil.rmtree(new_full_dir_path)
 
-                    # Переименовать директорию
-                    os.rename(full_dir_path, new_full_dir_path)
-                    print(f"Renamed '{full_dir_path}' to '{new_full_dir_path}'")
+                        # Переименовать директорию
+                        os.rename(full_dir_path, new_full_dir_path)
+                        print(f"Renamed '{full_dir_path}' to '{new_full_dir_path}'")
+                    else:
+                        print(f"Directory '{full_dir_path}' is already renamed")
                 else:
                     print(f"Directory '{full_dir_path}' does not exist")
 
