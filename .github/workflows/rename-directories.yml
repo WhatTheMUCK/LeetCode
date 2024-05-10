@@ -22,41 +22,39 @@ jobs:
       - name: Add leading zeros to directory names
         run: |
           python -c "
-      import os
-      import re
-      from git import Repo
-      
-      repo = Repo('.')
-      assert not repo.bare
-      dirs = []
-      for root, dirnames, _ in os.walk('.'):
-        for dirname in dirnames:
-          full_path = os.path.join(root, dirname)
-          if re.match(r'^\d+-', os.path.basename(full_path)):
+import os
+import re
+from git import Repo
+
+repo = Repo('.')
+assert not repo.bare
+dirs = []
+for root, dirnames, _ in os.walk('.'):
+    for dirname in dirnames:
+        full_path = os.path.join(root, dirname)
+        if re.match(r'^\d+-', os.path.basename(full_path)):
             dirs.append(full_path)
-      
-      def add_leading_zeros(dirname):
-        basename = os.path.basename(dirname)
-        parts = basename.split('-')
-        number = parts[0]
-        padded_number = f'{int(number):03d}'  # Adjust zero-padding as needed
-        new_dirname = padded_number + '-' + '-'.join(parts[1:])
-        full_new_dirname = os.path.join(os.path.dirname(dirname), new_dirname)
-        os.rename(dirname, full_new_dirname)
-        return full_new_dirname
-      
-      for d in dirs:
-        print(f'Processing directory: {d}')
-        new_name = add_leading_zeros(d)
-        print(f'Renamed {d} to {new_name}')
-        repo.git.add(new_name)
-        repo.git.rm(d)
-      
-      if dirs:
-        repo.git.commit('-m', 'Automatically renamed directories to include leading zeros')
-        repo.git.push()
-      "
 
+def add_leading_zeros(dirname):
+    basename = os.path.basename(dirname)
+    parts = basename.split('-')
+    number = parts[0]
+    padded_number = f'{int(number):04d}'  # Adjust zero-padding as needed
+    new_dirname = padded_number + '-' + '-'.join(parts[1:])
+    full_new_dirname = os.path.join(os.path.dirname(dirname), new_dirname)
+    os.rename(dirname, full_new_dirname)
+    return full_new_dirname
 
+for d in dirs:
+    print(f'Processing directory: {d}')
+    new_name = add_leading_zeros(d)
+    print(f'Renamed {d} to {new_name}')
+    repo.git.add(new_name)
+    repo.git.rm(d)
+
+if dirs:
+    repo.git.commit('-m', 'Automatically renamed directories to include leading zeros')
+    repo.git.push()
+"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
