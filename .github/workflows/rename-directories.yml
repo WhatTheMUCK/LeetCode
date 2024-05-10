@@ -20,6 +20,11 @@ jobs:
       - name: Rename directories
         run: python rename_directories.py
 
+      - name: Pull latest changes
+        run: |
+          git config --global --add safe.directory '*'
+          git pull --no-rebase
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
