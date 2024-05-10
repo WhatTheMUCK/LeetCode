@@ -10,7 +10,8 @@ def rename_directories(root_dir):
             # Удалить все файлы из целевой директории
             for filename in os.listdir(full_dir_path):
                 file_path = os.path.join(full_dir_path, filename)
-                os.remove(file_path)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
 
             # Переименовать директорию
             os.rename(full_dir_path, new_full_dir_path)
