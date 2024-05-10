@@ -18,7 +18,7 @@ jobs:
           python-version: '3.x'
 
       - name: Rename directories
-        run: python rename_directories.py
+        run: python /home/runner/work/LeetCode/rename_directories.py
 
       - name: Commit changes
         run: |
