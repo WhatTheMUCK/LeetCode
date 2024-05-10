@@ -26,10 +26,10 @@ def rename_directories(path):
                         os.rename(full_dir_path, new_full_dir_path)
                         print(f"Renamed '{full_dir_path}' to '{new_full_dir_path}'")
                     else:
-                        print(f"Directory '{full_dir_path}' is already renamed")
+                        pass
+                        # print(f"Directory '{full_dir_path}' is already renamed")
                 else:
-                    pass
-                    # print(f"Directory '{full_dir_path}' does not exist")
+                    print(f"Directory '{full_dir_path}' does not exist")
 
 if __name__ == '__main__':
     rename_directories('.')
