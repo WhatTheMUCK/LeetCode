@@ -22,9 +22,9 @@ jobs:
 
       - name: Pull latest changes
         run: |
-          git pull origin main
           git add .
           git commit -m "Зафиксированные незафиксированные изменения"
+          git pull origin main
 
       - name: Commit changes
         run: |
