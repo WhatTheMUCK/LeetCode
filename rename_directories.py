@@ -1,4 +1,5 @@
 import os
+import shutil
 import re
 
 def rename_directories(path):
@@ -12,6 +13,12 @@ def rename_directories(path):
                 new_number_part = number_part.zfill(4)
                 new_dir_name = f"{new_number_part}{rest_part}"
                 new_full_dir_path = os.path.join(path, new_dir_name)
+
+                # Удалить все файлы из новой директории
+                if os.path.exists(new_full_dir_path):
+                    shutil.rmtree(new_full_dir_path)
+
+                # Переименовать директорию
                 os.rename(full_dir_path, new_full_dir_path)
                 print(f"Renamed '{full_dir_path}' to '{new_full_dir_path}'")
 
