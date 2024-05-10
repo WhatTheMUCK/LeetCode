@@ -22,6 +22,7 @@ jobs:
 
       - name: Add untracked files
         run: |
+          cd $GITHUB_WORKSPACE
           git add .
           git status  # Optional: just to verify changes
           
