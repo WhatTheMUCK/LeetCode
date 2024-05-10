@@ -26,7 +26,6 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .
           git commit -m "Automatically rename directories"
-          git config --local pull.rebase true  # rebase
           git pull origin main
 
       - name: Commit changes
