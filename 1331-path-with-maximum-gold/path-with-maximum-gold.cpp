@@ -22,7 +22,8 @@ public:
         vector<vector<int>> visited(grid.size(), vector<int>(grid[0].size(), 0));
         for (int i = 0 ; i < grid.size(); i++){
             for (int j = 0; j < grid[0].size(); j++){
-                answer = max(answer, DFS(i, j, grid, visited, 0));
+                if (grid[i][j] != 0)
+                    answer = max(answer, DFS(i, j, grid, visited, 0));
             }
         }
         return answer;
