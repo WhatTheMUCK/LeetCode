@@ -11,38 +11,34 @@
  */
 class Solution {
 public:
-    void DFS(TreeNode* root, int target, vector<pair<TreeNode*, bool>>& helper, int flag) {
+    void DFS(TreeNode* root, int target, TreeNode* father, int flag) {
         if (!root)
             return;
 
         // Удаление узлов на основе условий
         if (!(root->left || root->right) && root->val == target) {
             if (flag == 0) {
-                (helper.back().first)->left = nullptr;
+                father->left = nullptr;
             } else if (flag == 1) {
-                (helper.back().first)->right = nullptr;
+                father->right = nullptr;
             }
             return;
         }
 
         if (root->left) {
-            helper.push_back({root, 0});
-            DFS(root->left, target, helper, 0);
-            helper.pop_back();
+            DFS(root->left, target, root, 0);
         }
 
         if (root->right) {
-            helper.push_back({root, 1});
-            DFS(root->right, target, helper, 1);
-            helper.pop_back();
+            DFS(root->right, target, root, 1);
         }
 
         // Проверка, если текущий узел после удаления его потомков становится листом с целевым значением
         if (!(root->left || root->right) && root->val == target) {
             if (flag == 0) {
-                (helper.back().first)->left = nullptr;
+                father->left = nullptr;
             } else if (flag == 1) {
-                (helper.back().first)->right = nullptr;
+                father->right = nullptr;
             }
         }
     }
@@ -50,8 +46,7 @@ public:
     TreeNode* removeLeafNodes(TreeNode* root, int target) {
         TreeNode* dummyHead = new TreeNode(-1);
         dummyHead->left = root;
-        vector<pair<TreeNode*, bool>> helper = {{dummyHead, 0}};
-        DFS(dummyHead, target, helper, 0);
+        DFS(dummyHead, target, dummyHead, 0);
         TreeNode* result = dummyHead->left;
         delete dummyHead;
         return result;
