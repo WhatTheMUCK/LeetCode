@@ -4,9 +4,9 @@ public:
         int l = 0, r = nums.size() - 1, m;
         while (l < r){
             m = (l + r) / 2;
-            //cout << "l: " << l << " r: " << r << " m: " << m << "\n";
-            if (target == nums[m])
+            if (nums[m] == target){
                 return m;
+            }
             if (nums[l] <= nums[m]){
                 if (nums[l] <= target && target < nums[m]){
                     r = m - 1;
