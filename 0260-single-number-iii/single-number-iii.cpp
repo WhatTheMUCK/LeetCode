@@ -5,7 +5,7 @@ public:
         for (int i = 0; i < nums.size(); i++){
             XOR ^= nums[i];
         } 
-        int pos = __builtin_ffs(XOR) - 1;
+        int pos = __builtin_ffs(XOR) - 1; // У __builtin_ffs индексация с 1
         // int pos = 0;
         // for (pos; !(XOR & (1ll << pos)); pos++);
         // Тоже самое что и __builtin_ffs (Встроенный поиск первого установленного бита "builtin find first set")
