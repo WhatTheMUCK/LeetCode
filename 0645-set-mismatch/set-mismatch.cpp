@@ -1,16 +1,16 @@
 class Solution {
 public:
     vector<int> findErrorNums(vector<int>& nums) {
-        unordered_map<int, int> mp;
+        int n = nums.size();
+        vector<int> check(n + 1, 0);
         int repetition;
         int sum = 0;
         for (int elem : nums){
-            if (mp.contains(elem))
+            if (check[elem] == 1)
                 repetition = elem;
-            mp[elem]++;
+            check[elem]++;
             sum += elem;
         }
-        int n = nums.size();
         return {repetition, n * (n + 1) / 2 - (sum - repetition)};
     }
 };
