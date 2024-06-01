@@ -3,12 +3,9 @@
 class Solution {
 public:
     vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
-        unordered_set<int> set1(all(nums1)), set2(all(nums2));
+        set<int> set1(all(nums1)), set2(all(nums2));
         vector<int> answer;
-        for (int elem : set2){
-            if (set1.contains(elem))
-                answer.push_back(elem);
-        }
+        set_intersection(all(set1), all(set2), back_inserter(answer));
         return answer;
     }
 };
