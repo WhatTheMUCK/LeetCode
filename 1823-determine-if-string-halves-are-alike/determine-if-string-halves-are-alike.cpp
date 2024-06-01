@@ -7,9 +7,7 @@ public:
         for (i; i < s.size() / 2; i++){
             if (find(vowels.begin(), vowels.end(), tolower(s[i])) != vowels.end())
                 vowels1++;
-        }
-        for (i; i < s.size(); i++){
-            if (find(vowels.begin(), vowels.end(), tolower(s[i])) != vowels.end())
+            if (find(vowels.begin(), vowels.end(), tolower(s[s.size() - 1 - i])) != vowels.end())
                 vowels2++;
         }
         return vowels1 == vowels2;
