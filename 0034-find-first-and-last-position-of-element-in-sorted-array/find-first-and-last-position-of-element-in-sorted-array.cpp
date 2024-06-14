@@ -15,9 +15,9 @@ public:
 
     vector<int> searchRange(vector<int>& nums, int target) {
         int l = search(nums, target);
-        int r = search(nums, target + 1);
         if (l == nums.size() || nums[l] != target)
             return {-1, -1};
+        int r = search(nums, target + 1);
         return {l, r - 1};
     }
 };
