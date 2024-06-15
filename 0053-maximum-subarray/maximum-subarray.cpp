@@ -6,7 +6,7 @@ public:
         int minpref = 0;
         int answer = INT_MIN;
         for (int i = 0; i < n; i++){
-            sum += nums[i ];
+            sum += nums[i];
             answer = max({answer, sum, sum - minpref});
             minpref = min(minpref, sum);
         }
