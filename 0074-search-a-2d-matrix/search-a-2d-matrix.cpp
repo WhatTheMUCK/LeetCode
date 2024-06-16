@@ -1,14 +1,22 @@
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        vector<int> column0;
-        generate_n(back_inserter(column0), matrix.size(), [i = 0, &matrix]() mutable { return matrix[i++][0]; });
-        int row = (upper_bound(column0.begin(), column0.end(), target) - column0.begin()) - 1; //upper ищет первый элемент строго больше
-        if (row == -1)
-            return false;
-        int col = lower_bound(matrix[row].begin(), matrix[row].end(), target) - matrix[row].begin();
-        if (col == matrix[row].size() || matrix[row][col] != target)
-            return false;
-        return true;
+        int n = matrix.size();
+        int m = matrix[0].size();
+        int l = 0, r = n * m, median;
+        int i, j;
+        while (l < r){
+            median = (l + r) / 2;
+            i = median / m;
+            j = median % m;
+            if (target == matrix[i][j])
+                return true;
+            if (target < matrix[i][j]){
+                r = median;
+            } else {
+                l = median + 1;
+            }
+        }
+        return false;
     }
 };
