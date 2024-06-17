@@ -1,9 +1,18 @@
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        int ind = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
-        if (ind == nums.size() || nums[ind] != target)
+        int l = 0, r = nums.size() - 1, m;
+        while (l < r){
+            m = (l + r) / 2;
+            if (nums[m] == target)
+                return m;
+            else if (nums[m] > target)
+                r = m - 1;
+            else 
+                l = m + 1;
+        }
+        if (l == nums.size() || nums[l] != target)
             return -1;
-        return ind;
+        return l;
     }
 };
