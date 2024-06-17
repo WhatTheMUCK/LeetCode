@@ -7,14 +7,10 @@ public:
     }
     
     int ping(int t) {
-        clean(t);
+         while (!q.empty() && q.front() < t - 3000)
+            q.pop();
         q.push(t);
         return q.size();
-    }
-    
-    void clean(int t){
-        while (!q.empty() && q.front() < t - 3000)
-            q.pop();
     }
 };
 
