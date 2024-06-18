@@ -10,21 +10,11 @@ struct ComparePairs {
 class Solution {
 public:
     int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
-        priority_queue<pair<int, int>, vector<pair<int, int>>, ComparePairs> pq, temp;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, ComparePairs> pq;
         for (int i = 0; i < difficulty.size(); i++){
             pq.push({difficulty[i], profit[i]});
         }
-        temp = pq;
-        while (!temp.empty()){
-            cout << temp.top().first << " " << temp.top().second << "\n";
-            temp.pop();
-        }
-        cout << "\n";
         sort(worker.begin(), worker.end(), greater<int>());
-        for (int i = 0; i < worker.size(); i++){
-            cout << worker[i] << " ";
-        }
-        cout << "\n";
         int answer = 0;
        for (int cur = 0; cur < worker.size(); cur++){
             while (!pq.empty() && worker[cur] < pq.top().first)
