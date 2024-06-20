@@ -2,7 +2,7 @@ class Solution {
 public:
     int maxDistance(vector<int>& position, int m) {
         sort(position.begin(), position.end());
-        int l = 1, r = 1e9, median;
+        int l = 1, r = (position.back() - position[0]) / (m - 1), median;
         while (l <= r){
             median = (l + r) / 2;
             if (check(position, m, median)){
