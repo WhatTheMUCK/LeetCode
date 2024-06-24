@@ -1,9 +1,7 @@
 class Solution {
 public:
     string longestPalindrome(string s) {
-        int answer = 1, l, r;
-        string helper = "";
-        helper += s[0];
+        int maxLength = 1, l, r, startPos = 0;
         for (int i = 1; i < s.size(); i++){
             for (int j = 0; j < 2; j++){
                 l = i - j;
@@ -14,12 +12,12 @@ public:
                 }
                 l++;
                 r--;
-                if (answer < r - l + 1){
-                    answer = r - l + 1;
-                    helper = s.substr(l, r - l + 1);
+                if (r - l + 1 > maxLength){
+                    maxLength = r - l + 1;
+                    startPos = l;
                 }
             }
         }
-        return helper;
+        return s.substr(startPos, maxLength);
     }
 };
