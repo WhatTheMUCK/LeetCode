@@ -1,7 +1,7 @@
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
-        vector<int> sASCII(256, -1), tASCII(256, -1);
+        vector<int> sASCII(128, -1), tASCII(128, -1);
         for (int i = 0; i < s.size(); i++){
             if (sASCII[s[i]] != -1 && sASCII[s[i]] != t[i])
                 return false;
