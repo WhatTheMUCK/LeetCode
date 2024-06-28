@@ -1,22 +1,14 @@
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
-        unordered_map<char, char> start, end;
+        vector<int> sASCII(256, -1), tASCII(256, -1);
         for (int i = 0; i < s.size(); i++){
-            if (start.find(s[i]) == start.end()){
-                if (end.find(t[i]) == end.end()){
-                    start[s[i]] = t[i];
-                    end[t[i]] = s[i];
-                } else {
-                    if (end[t[i]] != s[i]){
-                        return false;
-                    }
-                }
-            } else {
-                if (start[s[i]] != t[i]){
-                    return false;
-                }
-            }
+            if (sASCII[s[i]] != -1 && sASCII[s[i]] != t[i])
+                return false;
+            if (tASCII[t[i]] != -1 && tASCII[t[i]] != s[i])
+                return false;
+            sASCII[s[i]] = t[i];
+            tASCII[t[i]] = s[i];
         }
         return true;
     }
