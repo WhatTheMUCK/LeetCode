@@ -1,26 +1,16 @@
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        unordered_map<char, int> dict;
-        if (s.size() != t.size()){
-            return false;
-        }
-        for (char elem : s){
-            if (dict.find(elem) != dict.end()){
-                dict[elem]++;
-            } else {
-                dict[elem] = 1;
-            }
+        vector<int> letter('z' - 'a' + 1, 0);
+        for (char sign : t){
+            letter[sign - 'a']++;
         }
 
-        for (char elem : t){
-            if (dict.find(elem) != dict.end() && dict[elem] > 0){
-                dict[elem]--;
-            } else {
+        for (char sign : s){
+            if (letter[sign - 'a'] == 0)
                 return false;
-            }
+            letter[sign - 'a']--;
         }
-
-        return true;
+        return s.size() == t.size();
     }
 };
