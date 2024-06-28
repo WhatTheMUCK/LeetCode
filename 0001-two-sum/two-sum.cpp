@@ -1,12 +1,12 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        unordered_map<int, int> dict;
-        for (int i = 0; i < nums.size(); i++){
-            if (dict.contains(target - nums[i])){
-                return {dict[target - nums[i]], i};
-            }
-            dict[nums[i]] = i;
+        unordered_map<int, int> search;
+        search[nums[0]] = 0;
+        for (int i = 1; i < nums.size(); i++){
+            if (search.contains(target - nums[i]))
+                return {search[target - nums[i]], i};
+            search[nums[i]] = i;
         }
         return {};
     }
