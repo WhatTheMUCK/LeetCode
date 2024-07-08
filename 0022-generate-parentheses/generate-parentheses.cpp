@@ -1,21 +1,23 @@
 class Solution {
 public:
-    void generator(int open, int close, vector<string> &answer, string temp){
+    void generatePar(int open, int close, string temp, vector<string> &answer){
         if (open == 0){
-            generate_n(back_inserter(temp), close, [](){ return ')'; });
+            for (int i = 0; i < close; i++){
+                temp.push_back(')');
+            }
             answer.push_back(temp);
             return;
         }
-        generator(open - 1, close, answer, temp + "(");
-        if (open < close){
-            generator(open, close - 1, answer, temp + ")");
-        } 
+        generatePar(open - 1, close, temp + "(", answer);
+        if (close > open){
+            generatePar(open, close - 1, temp + ")", answer);
+        }
         return;
     }
-    
+
     vector<string> generateParenthesis(int n) {
         vector<string> answer;
-        generator(n, n, answer, "");
+        generatePar(n, n, "", answer);
         return answer;
     }
 };
