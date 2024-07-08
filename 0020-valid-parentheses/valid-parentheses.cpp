@@ -1,19 +1,19 @@
 class Solution {
 public:
     bool isValid(string s) {
-        vector<int> parenthesis;
-        string straight = "([{", reverse = ")]}";
-        string::iterator search;
-        for (char elem : s){
-            search = find(straight.begin(), straight.end(), elem);
-            if (search != straight.end()){
-                parenthesis.push_back(reverse[search - straight.begin()]);
+        string parenthesis = "({[]})";
+        stack<char> st;
+        int n = parenthesis.size();
+        for (int i = 0; i < s.size(); i++){
+            int search = parenthesis.find(s[i]);
+            if (search < n / 2){
+                st.push(parenthesis[n - (search + 1)]);
             } else {
-                if (parenthesis.empty() || parenthesis.back() != elem)
+                if (st.empty() || st.top() != s[i])
                     return false;
-                parenthesis.pop_back();
+                st.pop();
             }
         }
-        return parenthesis.empty();
+        return st.empty();
     }
 };
