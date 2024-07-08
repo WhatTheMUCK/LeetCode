@@ -11,30 +11,35 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode *dummy = new ListNode(-1);
-        ListNode *cur = dummy;
+        ListNode *dummyHead = new ListNode(-1);
+        ListNode *cur = dummyHead;
         while (list1 && list2){
-            int val1 = list1->val;
-            int val2 = list2->val;
-            cur->next = new ListNode(min(val1, val2));
-            cur = cur->next;
-            if (val1 < val2)
+            int val1 = list1->val, val2 = list2->val;
+            if (val1 < val2){
+                cur->next = new ListNode(val1);
+                cur = cur->next;
                 list1 = list1->next;
-            else
+            } else {
+                cur->next = new ListNode(val2);
+                cur = cur->next;
                 list2 = list2->next;
+            }
         }
+
         while (list1){
             int val1 = list1->val;
             cur->next = new ListNode(val1);
             cur = cur->next;
             list1 = list1->next;
         }
+
         while (list2){
             int val2 = list2->val;
             cur->next = new ListNode(val2);
             cur = cur->next;
             list2 = list2->next;
         }
-        return dummy->next;
+
+        return dummyHead->next;
     }
 };
