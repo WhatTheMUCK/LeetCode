@@ -3,16 +3,14 @@ public:
     string reverseWords(string s) {
         string answer = "";
         s.push_back(' ');
-        deque<char> helper;
+        string helper;
         for (int i = 0; i < s.size(); i++){
             if (s[i] == ' '){
-                for (char elem : helper){
-                    answer.push_back(elem);
-                }
+                generate_n(back_inserter(answer), helper.size(), [&s, &helper, i = helper.size() - 1]() mutable {return helper[i--]; });
                 answer.push_back(' ');
-                helper = deque<char>();
+                helper = "";
             } else {
-                helper.push_front(s[i]);
+                helper.push_back(s[i]);
             }
         }
         answer.pop_back();
