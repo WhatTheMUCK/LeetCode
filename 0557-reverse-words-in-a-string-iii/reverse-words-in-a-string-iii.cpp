@@ -6,7 +6,10 @@ public:
         deque<char> helper;
         for (int i = 0; i < s.size(); i++){
             if (s[i] == ' '){
-                answer += string(helper.begin(), helper.end()) + " ";
+                for (char elem : helper){
+                    answer.push_back(elem);
+                }
+                answer.push_back(' ');
                 helper = deque<char>();
             } else {
                 helper.push_front(s[i]);
