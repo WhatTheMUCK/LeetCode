@@ -1,16 +1,15 @@
 class Solution {
 public:
     string reverseWords(string s) {
+        string answer = "";
         s.push_back(' ');
-        string answer, temp;
+        deque<char> helper;
         for (int i = 0; i < s.size(); i++){
             if (s[i] == ' '){
-                reverse(temp.begin(), temp.end());
-                generate_n(back_inserter(answer), temp.size(), [i = 0, &temp]() mutable { return temp[i++]; });
-                temp = "";
-                answer.push_back(' ');
+                answer += string(helper.begin(), helper.end()) + " ";
+                helper = deque<char>();
             } else {
-                temp.push_back(s[i]);
+                helper.push_front(s[i]);
             }
         }
         answer.pop_back();
