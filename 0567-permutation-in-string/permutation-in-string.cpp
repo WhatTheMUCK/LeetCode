@@ -1,35 +1,33 @@
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
-        if (s2.size() < s1.size())
+        if (s1.size() > s2.size())
             return false;
-        unordered_map<char, int> start, dict;
-        for (char elem : s1)
-            start[elem]++;
-        
-        dict = start;
+        unordered_map<char, int> mp, temp;
+        for (char elem : s1){
+            mp[elem]++;
+        }
+        temp = mp;
         int helper = s1.size();
         int l = 0, r = 0;
         while (r < s2.size()){
-            if (!dict.contains(s2[r])){
-                dict = start;
-                l = r + 1;
-                r = l;
+            if (!temp.contains(s2[r])){
                 helper = s1.size();
+                temp = mp;
+                l = r + 1;
             } else {
-                if (dict[s2[r]] > 0){
-                    dict[s2[r]]--;
-                    r++;
-                    helper--;
-                } else {
-                    dict[s2[l]]++;
+                while (temp[s2[r]] == 0){
+                    temp[s2[l]]++;
                     l++;
                     helper++;
                 }
+                temp[s2[r]]--;
+                helper--;
+                if (helper == 0)
+                    return true;
             }
-            if (!helper)
-                return true;
-        } 
+            r++;
+        }
         return false;
     }
 };
