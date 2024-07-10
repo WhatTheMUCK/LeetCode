@@ -12,23 +12,23 @@
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
-        if (!root)
-            return {};
-        queue<pair<int, TreeNode*>> bfs;
+        queue<pair<TreeNode*, int>> bfs;
         vector<vector<int>> answer;
-        bfs.push({1, root});
+        if (root)
+            bfs.push({root, 1});
         while (!bfs.empty()){
-            auto [ind, cur] = bfs.front();
+            auto [cur, level] = bfs.front();
             bfs.pop();
-            if (!cur)
-                continue;
-            if (answer.size() < ind){
+            if (level > answer.size()){
                 answer.push_back({});
             }
-            answer.back().push_back(cur->val);
-            bfs.push({ind + 1, cur->left});
-            bfs.push({ind + 1, cur->right});
+            answer[level - 1].push_back(cur->val);
+            if (cur->left)
+                bfs.push({cur->left, level + 1});
+            if (cur->right)
+                bfs.push({cur->right, level + 1});
         }
         return answer;
+
     }
 };
