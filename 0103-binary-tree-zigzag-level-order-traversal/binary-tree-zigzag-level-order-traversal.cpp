@@ -9,35 +9,26 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-typedef struct{
-    TreeNode* node;
-    int level;
-}custom;
-
 class Solution {
 public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        vector<deque<int>> temp;
-        queue<custom> bfs;
-        bfs.push({root, 0});
+        vector<vector<int>> answer;
+        queue<pair<TreeNode*, int>> bfs;
+        if (root)
+            bfs.push({root, 1});
         while (!bfs.empty()){
             auto [cur, level] = bfs.front();
             bfs.pop();
             if (!cur)
                 continue;
-            if (level == temp.size()){
-                temp.push_back(deque<int>());
-            }
-            if (level % 2 == 0)
-                temp[level].push_back(cur->val);
-            else
-                temp[level].push_front(cur->val);
+            if (level > answer.size())
+                answer.push_back({});
+            answer[level - 1].push_back(cur->val);
             bfs.push({cur->left, level + 1});
-            bfs.push({cur->right, level + 1});
+            bfs.push({cur->right, level + 1}); 
         }
-        vector<vector<int>> answer;
-        for (deque<int> &deq : temp){
-            answer.push_back(vector<int>(deq.begin(), deq.end()));
+        for (int i = 1; i < answer.size(); i += 2){
+            reverse(answer[i].begin(), answer[i].end());
         }
         return answer;
     }
