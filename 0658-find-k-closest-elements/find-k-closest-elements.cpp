@@ -3,7 +3,7 @@ public:
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
         int l = 0, r = arr.size() - 1, m;
         while (l <= r){
-            m = l + (r - l) / 2;
+            m = (l + r) / 2;
             //cout << "l: " << l << " r: " << r << " m: " << m << " x: " << x << " arr[m]: " << arr[m] << "\n";
             if (x >= arr[m]){
                 l = m + 1;
@@ -11,10 +11,10 @@ public:
                 r = m - 1;
             } 
         }
-        cout << l << " " << r << "\n";
         deque<int> closest;
-        int start = l;
-        l = start - 1, r = start;
+        //int start = lower_bound(arr.begin(), arr.end(), x) - arr.begin();
+        //int l = start - 1, r = start;
+        r = l, l = l - 1;
         while (k > 0){
             if (l < 0){
                 closest.push_back(arr[r]);
@@ -34,11 +34,7 @@ public:
             k--;
         }
 
-        vector<int> answer;
-        while (!closest.empty()){
-            answer.push_back(closest.front());
-            closest.pop_front();
-        }
+        vector<int> answer(closest.begin(), closest.end());
 
         return answer;
     }
