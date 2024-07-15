@@ -35,7 +35,6 @@ public:
             } else {
                 parent->right = child;
             }
-            dict[description[0]].first = parent;
         }
         for (pair<int, pair<TreeNode*, int>> elem : dict){
             if (elem.second.second == 0)
