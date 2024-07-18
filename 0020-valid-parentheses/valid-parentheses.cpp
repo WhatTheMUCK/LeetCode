@@ -1,19 +1,22 @@
 class Solution {
 public:
     bool isValid(string s) {
-        string parenthesis = "({[]})";
-        stack<char> st;
-        int n = parenthesis.size();
-        for (int i = 0; i < s.size(); i++){
-            int search = parenthesis.find(s[i]);
-            if (search < n / 2){
-                st.push(parenthesis[n - (search + 1)]);
+        unordered_map<char, char> dict = {
+            {')', '('},
+            {'}', '{'},
+            {']', '['}
+        };
+        stack<char> parentheses;
+        for (char elem : s){
+            if (!dict.contains(elem)){
+                parentheses.push(elem);
             } else {
-                if (st.empty() || st.top() != s[i])
+                if (!parentheses.empty() && parentheses.top() == dict[elem])
+                    parentheses.pop();
+                else
                     return false;
-                st.pop();
             }
         }
-        return st.empty();
+        return parentheses.empty();
     }
 };
