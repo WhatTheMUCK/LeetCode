@@ -1,28 +1,33 @@
 class Solution {
 public:
     string simplifyPath(string path) {
-        vector<string> helper;
-        string temp = "";
-        path += '/';
+        path.push_back('/');
+        deque<string> dirs;
+        string directory = "";
+        unordered_set<string> skip = {
+            "",
+            ".",
+            ".."
+        };
         for (char elem : path){
             if (elem == '/'){
-                if (temp == ".."){
-                    if (!helper.empty())
-                        helper.pop_back();
-                } else if (temp != "." && !temp.empty()){
-                    helper.push_back(temp);
+                if (directory == ".." && !dirs.empty()){
+                    dirs.pop_back();
+                } else if (!skip.contains(directory)){
+                    dirs.push_back(directory);
                 }
-                temp = "";
+                directory = "";
             } else {
-                temp += elem;
+                directory.push_back(elem);
             }
         }
-        string answer = "/";
-        for (string elem : helper){
-            answer += elem + "/";
+
+        string answer = "";
+        while (!dirs.empty()){
+            answer += "/" + dirs.front();
+            dirs.pop_front();
         }
-        if (answer.size() > 1)
-            answer.pop_back();
-        return answer;
+
+        return (answer.empty() ? "/" : answer);
     }
 };
