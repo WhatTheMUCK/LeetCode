@@ -1,7 +1,7 @@
 class Solution {
 public:
     vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums) {
-        stable_sort(nums.begin(), nums.end(), [&](int l, int r){
+        sort(nums.begin(), nums.end(), [&](int l, int r){
             int tempL = l, tempR = r;
             int mappingL = 0, mappingR = 0;
             int pow10 = 1;
