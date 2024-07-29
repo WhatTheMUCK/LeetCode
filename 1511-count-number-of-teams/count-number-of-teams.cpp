@@ -4,7 +4,7 @@ public:
         const int n = rating.size();
         int cnt= 0;
         for (int i = 1; i < n-1; i++) {
-            int L[2]={0}, R[2]={0};
+            int L[2] = {0}, R[2] = {0};
 
             // Count ratings on the left of i
             for (int j = 0; j < i; j++) 
@@ -15,7 +15,7 @@ public:
                 R[rating[k] < rating[i]]++;
 
             // number of valid teams
-            cnt += L[0]*R[1] + L[1]*R[0];
+            cnt += L[0]  *R[1] + L[1] * R[0];
         }
         return cnt;
     }
