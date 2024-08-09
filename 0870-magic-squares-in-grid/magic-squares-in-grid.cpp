@@ -3,8 +3,6 @@ public:
     int numMagicSquaresInside(vector<vector<int>>& grid) {
         int rows = grid.size(), cols = grid[0].size();
         int answer = 0;
-        if (min(rows, cols) < 3)
-            return answer;
         vector<int> sums(8, 0);
         set<int> numbers;
         bool exit;
