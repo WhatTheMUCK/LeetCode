@@ -8,7 +8,7 @@ public:
         for (int i = 0; i <= rows - 3; i++){
             for (int j = 0; j <= cols - 3; j++){
                 vector<int> sums(8, 0);
-                unordered_set<int> numbers;
+                set<int> numbers;
                 bool exit = false;
                 for (int k = 0; k < 3 * 3; k++){
                     int x = j + k % 3, y = i + k / 3;
@@ -26,7 +26,7 @@ public:
                     numbers.insert(grid[y][x]);
                 }
                 if (!exit && numbers.size() == 9){
-                    unordered_set<int> checker(sums.begin(), sums.end());
+                    set<int> checker(sums.begin(), sums.end());
                     answer += checker.size() == 1;
                 }       
 
