@@ -5,11 +5,14 @@ public:
         int answer = 0;
         if (min(rows, cols) < 3)
             return answer;
+        vector<int> sums(8, 0);
+        set<int> numbers;
+        bool exit;
         for (int i = 0; i <= rows - 3; i++){
             for (int j = 0; j <= cols - 3; j++){
-                vector<int> sums(8, 0);
-                set<int> numbers;
-                bool exit = false;
+                fill(sums.begin(), sums.end(), 0);
+                numbers = {};
+                exit = false;
                 for (int k = 0; k < 3 * 3; k++){
                     int x = j + k % 3, y = i + k / 3;
                     int xOffset = k % 3, yOffset = k / 3;
