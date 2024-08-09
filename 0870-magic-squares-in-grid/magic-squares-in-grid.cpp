@@ -16,7 +16,7 @@ public:
                 for (int k = 0; k < 3 * 3; k++){
                     int x = j + k % 3, y = i + k / 3;
                     int xOffset = k % 3, yOffset = k / 3;
-                    if (grid[y][x] > 9 || grid[y][x] == 0){
+                    if (!(1 <= grid[y][x] && grid[y][x] <= 9)){
                         exit = true;
                         break;
                     }
