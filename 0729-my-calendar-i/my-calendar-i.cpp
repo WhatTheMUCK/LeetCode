@@ -1,12 +1,3 @@
-namespace std {
-    template <> struct hash<pair<int, int>> {
-        inline size_t operator()(const pair<int, int> &v) const {
-            hash<int> int_hasher;
-            return int_hasher(v.first) ^ int_hasher(v.second) * 63;
-        }
-    };
-}
-
 class MyCalendar {
 public:
     set<pair<int, int>> books;
