@@ -7,10 +7,7 @@ public:
             int curMax = pq_nums.top();
             pq_nums.pop();
             answer += curMax;
-            if (curMax % 3)
-                pq_nums.push(curMax / 3 + 1);
-            else
-                pq_nums.push(curMax / 3);
+            pq_nums.push((curMax + 2)/ 3);
         }
         return answer;
     }
