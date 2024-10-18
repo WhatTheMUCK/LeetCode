@@ -12,8 +12,11 @@ public:
             for (int j = 0; j < n; j++){
                 if ((i >> (n - (j + 1))) & 1)
                     tempBitWiseOr |= nums[j];
+                if (tempBitWiseOr == maximumBitWiseOr)
+                    break;
             }
-            answer += tempBitWiseOr == maximumBitWiseOr;
+            if (tempBitWiseOr == maximumBitWiseOr)
+                answer++;
         }
         return answer;
     }
