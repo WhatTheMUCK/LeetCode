@@ -6,17 +6,15 @@ public:
         for (int i = 0; i < n; i++){
             pq.push({nums[i], i});
         }
+        
         for (int i = 0; i < k; i++){
-            pair<int, int> cur = pq.top();
-            pq.pop();
-            pq.push({cur.first * multiplier, cur.second});
-        }
-        while (!pq.empty()){
             auto [value, ind] = pq.top();
-            nums[ind] = value;
             pq.pop();
-        }
 
+            nums[ind] *= multiplier;
+            pq.push({nums[ind], ind});
+        }
+        
         return nums;
     }
 };
