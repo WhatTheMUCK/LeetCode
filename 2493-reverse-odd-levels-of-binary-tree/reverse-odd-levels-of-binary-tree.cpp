@@ -23,17 +23,23 @@ public:
                 for (int i = 0; i < n / 2; i++){
                     swap(oddLevel[i]->val, oddLevel[n - (i + 1)]-> val);
                 }
-                oddLevel = {};
-            }
-            if (!vertex){
-                break;
+                oddLevel.clear();
             }
             if (level % 2 == 1){
                 oddLevel.push_back(vertex);
             }
-            bfs.push({vertex->left, level + 1});
-            bfs.push({vertex->right, level + 1});
+            if (vertex->left){
+                bfs.push({vertex->left, level + 1});
+            }
+            if (vertex->right){
+                bfs.push({vertex->right, level + 1});
+            }
         }
+        int n = oddLevel.size();
+        for (int i = 0; i < n / 2; i++){
+            swap(oddLevel[i]->val, oddLevel[n - (i + 1)]-> val);
+        }
+        oddLevel.clear();
         return root;
     }
 };
