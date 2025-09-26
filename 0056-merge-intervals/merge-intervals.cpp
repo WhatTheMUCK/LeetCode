@@ -1,21 +1,18 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        sort(intervals.begin(), intervals.end());
-        vector<vector<int>> answer;
-        int l1 = intervals[0][0], r1 = intervals[0][1];
-        for (int i = 1; i < intervals.size(); i++){
-            int l2 = intervals[i][0], r2 = intervals[i][1];
-            if (l2 > r1){
-                answer.push_back({l1, r1});
-                l1 = l2;
-                r1 = r2;
-            } else {
-                l1 = min(l1, l2);
-                r1 = max(r1, r2);
+        std::vector<std::vector<int>> answer;
+        std::sort(intervals.begin(), intervals.end());
+        answer.push_back(intervals[0]);
+        for (size_t i = 1; i < intervals.size(); ++i) {
+            if (intervals[i][0] <= answer.back()[1]) {
+                answer.back()[0] = std::min(answer.back()[0], intervals[i][0]);
+                answer.back()[1] = std::max(answer.back()[1], intervals[i][1]);
+                continue;
             }
+            answer.push_back(intervals[i]);
         }
-        answer.push_back({l1, r1});
+
         return answer;
     }
 };
