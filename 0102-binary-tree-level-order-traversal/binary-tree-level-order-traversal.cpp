@@ -12,23 +12,25 @@
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
-        queue<pair<TreeNode*, int>> bfs;
-        vector<vector<int>> answer;
-        if (root)
-            bfs.push({root, 1});
-        while (!bfs.empty()){
-            auto [cur, level] = bfs.front();
-            bfs.pop();
-            if (level > answer.size()){
-                answer.push_back({});
+        std::vector<std::vector<int>> answer;
+        std::queue<std::pair<TreeNode *, int>> nodes;
+        int curLvl = 0;
+        nodes.push({root, curLvl});
+        while (!nodes.empty()) {
+            auto [node, lvl] = nodes.front();
+            nodes.pop();
+            if (node == nullptr) {
+                continue;
             }
-            answer[level - 1].push_back(cur->val);
-            if (cur->left)
-                bfs.push({cur->left, level + 1});
-            if (cur->right)
-                bfs.push({cur->right, level + 1});
+            if (lvl == answer.size()) {
+                answer.push_back({node->val});
+            } else {
+                answer[lvl].push_back(node->val);
+            }
+            ++lvl;
+            nodes.push({node->left, lvl});
+            nodes.push({node->right, lvl});
         }
         return answer;
-
     }
 };
