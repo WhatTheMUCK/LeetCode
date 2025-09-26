@@ -1,6 +1,10 @@
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
-        return accumulate(nums.begin(), nums.end(), 0, [](int acc, int x){ return acc ^ x; });
+        int answer = 0;
+        for (int elem : nums) {
+            answer ^= elem;
+        }
+        return answer;
     }
 };
