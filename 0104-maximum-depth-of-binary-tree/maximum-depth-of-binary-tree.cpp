@@ -9,13 +9,13 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-
 class Solution {
 public:
-
     int maxDepth(TreeNode* root) {
-        if (!root)
+        if (!root) {
             return 0;
-        return max(maxDepth(root->left), maxDepth(root->right)) + 1; 
+        }
+
+        return 1 + std::max(maxDepth(root->left), maxDepth(root->right));
     }
 };
