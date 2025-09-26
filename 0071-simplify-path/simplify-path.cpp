@@ -1,33 +1,37 @@
+#include <vector>
+
 class Solution {
 public:
     string simplifyPath(string path) {
         path.push_back('/');
-        deque<string> dirs;
-        string directory = "";
-        unordered_set<string> skip = {
-            "",
-            ".",
-            ".."
-        };
-        for (char elem : path){
-            if (elem == '/'){
-                if (directory == ".." && !dirs.empty()){
-                    dirs.pop_back();
-                } else if (!skip.contains(directory)){
-                    dirs.push_back(directory);
-                }
-                directory = "";
-            } else {
-                directory.push_back(elem);
+        std::vector<std::string> helper;
+        int prevSlash = path.find('/');
+        int curSlash;
+        while ((curSlash = path.find('/', prevSlash + 1)) != std::string::npos) {
+            std::string word = path.substr(prevSlash + 1, curSlash - prevSlash - 1);
+            prevSlash = curSlash;
+            if (word == "." || word.empty()) {
+                continue;
             }
+
+            if (word == "..") {
+                if (!helper.empty()){
+                    helper.pop_back();
+                }
+                continue;
+            }
+
+            helper.push_back(word);
         }
 
-        string answer = "";
-        while (!dirs.empty()){
-            answer += "/" + dirs.front();
-            dirs.pop_front();
+        std::string answer;
+        if (helper.empty()) {
+            helper.push_back("");
         }
-
-        return (answer.empty() ? "/" : answer);
+        
+        for (const std::string & word : helper) {
+            answer += '/' + word;
+        }
+        return answer;
     }
 };
