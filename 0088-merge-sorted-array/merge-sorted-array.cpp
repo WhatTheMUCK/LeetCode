@@ -1,22 +1,31 @@
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-        int firstInd = m - 1, secondInd = n - 1, insert = nums1.size() - 1;
-        while (firstInd >= 0 || secondInd >= 0){
-            if (firstInd < 0){
-                nums1[insert--] = nums2[secondInd--];
+        int index = m + n - 1;
+        for (int i = m - 1, j = n - 1; index >= 0; --index) {
+            if (i >= 0 && j >= 0) {
+                if (nums1[i] >= nums2[j]) {
+                    nums1[index] = nums1[i];
+                    --i;
+                } else {
+                    nums1[index] = nums2[j];
+                    --j;
+                }
                 continue;
             }
-            if (secondInd < 0){
-                nums1[insert--] = nums1[firstInd--];
+
+            if (i >= 0) {
+                nums1[index] = nums1[i];
+                --i;
                 continue;
             }
-            if (nums1[firstInd] < nums2[secondInd]){
-                nums1[insert--] = nums2[secondInd--];
-            } else {
-                nums1[insert--] = nums1[firstInd--];
+
+            if (j >= 0) {
+                nums1[index] = nums2[j];
+                --j;
             }
         }
+
         return;
     }
 };
