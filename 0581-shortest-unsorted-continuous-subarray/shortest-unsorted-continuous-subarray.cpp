@@ -1,22 +1,24 @@
 class Solution {
 public:
     int findUnsortedSubarray(vector<int>& nums) {
-        int n = nums.size();
-        int l = 1e6, r = -1e6, maximum = INT_MIN, minimum = INT_MAX;
-        for (int i = n - 1; i >= 0; i--){
-            if (nums[i] <= minimum){
-                minimum = nums[i];
-            } else {
-                l = i;
-            }
+        int n = static_cast<int>(nums.size());
+        int start = 0, end = n - 1;
+        for (; start <= n - 2 && nums[start] <= nums[start + 1]; ++start);
+        for (; end >= 1 && nums[end] >= nums[end - 1]; --end);
+        if (start >= end) {
+            return 0;
         }
-        for (int i = 0; i < n; i++){
-            if (nums[i] >= maximum){
-                maximum = nums[i];
-            } else {
-                r = i;
-            }
+
+        int minimum = nums[start], maximum = nums[start];
+        for (int i = start; i <= end; ++i) {
+            minimum = std::min(minimum, nums[i]);
+            maximum = std::max(maximum, nums[i]);
         }
-        return max(r - l + 1, 0);
+        int i;        
+        for (i = 0; i < start && nums[i] <= minimum; ++i);
+        start = i;
+        for (i = n - 1; i > end && nums[i] >= maximum; --i);
+        end = i;
+        return end - start + 1;
     }
 };
