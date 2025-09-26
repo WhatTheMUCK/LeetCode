@@ -9,20 +9,41 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
+#include <unordered_map>
+
 class Solution {
 public:
-    string solve(TreeNode* root, unordered_map<string, int> &mp, vector<TreeNode*> &ans){
-        if(!root) return "";
-        string str = to_string(root->val) + "," + solve(root->left, mp, ans) + "," + solve(root->right, mp, ans);
-        mp[str]++;
-        if(mp[str]==2)
-            ans.push_back(root);
-        return str;
+    std::unordered_map<TreeNode *, std::string> mp;
+    
+    std::string serialize(TreeNode * root) {
+        if (!root) {
+            return "";
+        }
+
+        mp[root] = std::to_string(root->val) + " " + serialize(root->left) + " " + serialize(root->right);
+        return mp[root];
+
     }
     vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
-        unordered_map<string, int> mp;
-        vector<TreeNode*> ans;
-        solve(root, mp, ans);
-        return ans;
+        serialize(root);
+        std::vector<TreeNode *> answer;
+        std::unordered_map<std::string, std::vector<TreeNode *>> st;
+
+        for (const auto & [node, serializeStr] : mp) {
+            if (!st.contains(serializeStr)) {
+                st[serializeStr] = {node};
+            } else {
+                st[serializeStr].push_back(node);
+            }
+        }
+
+        for (const auto & [_, vecNodes] : st) {
+            if (vecNodes.size() > 1) {
+                answer.push_back(vecNodes[0]);
+            }
+        }
+
+        return answer;
     }
 };
