@@ -1,16 +1,18 @@
+#include <unordered_map>
+
 class Solution {
 public:
     vector<int> twoSum(vector<int>& numbers, int target) {
-        int l = 0, r = numbers.size() - 1;
-        while (l < r){
-            if (numbers[l] + numbers[r] > target){
-                r--;
-            } else if (numbers[l] + numbers[r] < target){
-                l++;
-            } else {
-                return {l + 1, r + 1};
+        std::unordered_map<int, int> mp;
+        int n = static_cast<int>(numbers.size());
+        for (int i = 0; i < n; ++i) {
+            int cur = numbers[i];
+            if (mp.contains(target - cur)) {
+                return {mp[target - cur], i + 1};
             }
+            mp[cur] = i + 1;
         }
-        return {l + 1, r + 1};
+
+        return {-1, -1};
     }
 };
