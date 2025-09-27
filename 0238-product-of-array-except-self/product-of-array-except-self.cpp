@@ -1,16 +1,18 @@
 class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
-        vector<int> postfix(nums.size(), 1);
-        for (int i = nums.size() - 2; i >= 0; i--){
-            postfix[i] = postfix[i + 1] * nums[i + 1];
+        int n = static_cast<int>(nums.size());
+        std::vector<int> leftProduct(n, 1), rightProduct(n, 1);
+        for (int i = 1; i < n; ++i) {
+            leftProduct[i] = leftProduct[i - 1] * nums[i - 1];
+            rightProduct[n - (i + 1)] = rightProduct[n - i] * nums[n - i];
         }
-        int multiplication = 1;
-        vector<int> answer(nums.size(), 0);
-        for (int i = 0; i < nums.size(); i++){
-            answer[i] = multiplication * postfix[i];
-            multiplication *= nums[i];
+
+        std::vector<int> answer(n, 1);
+        for (int i = 0; i < n; ++i) {
+            answer[i] = leftProduct[i] * rightProduct[i];
         }
+
         return answer;
     }
 };
