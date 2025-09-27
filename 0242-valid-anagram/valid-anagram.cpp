@@ -1,16 +1,16 @@
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        vector<int> letter('z' - 'a' + 1, 0);
-        for (char sign : t){
-            letter[sign - 'a']++;
+        const int dictSize = 'z' - 'a' + 1;
+        std::array<int, dictSize> sDict, tDict;
+        for (char letter : s) {
+            ++sDict[letter - 'a']; 
         }
 
-        for (char sign : s){
-            if (letter[sign - 'a'] == 0)
-                return false;
-            letter[sign - 'a']--;
+        for (char letter : t) {
+            ++tDict[letter - 'a'];
         }
-        return s.size() == t.size();
+
+        return (sDict == tDict);
     }
 };
