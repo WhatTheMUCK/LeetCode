@@ -1,14 +1,26 @@
+#include <unordered_map>
+#include <unordered_set>
+
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
-        vector<int> sASCII(128, -1), tASCII(128, -1);
-        for (int i = 0; i < s.size(); i++){
-            if (sASCII[s[i]] != -1 && sASCII[s[i]] != t[i])
+        std::unordered_map<char, char> convert;
+        std::unordered_set<char> used;
+
+        int n = static_cast<int>(s.size());
+        for (int i = 0; i < n; ++i) {
+            if (!convert.contains(s[i])) {
+                if (used.contains(t[i])) {
+                    return false;
+                }
+                used.insert(t[i]);
+                convert[s[i]] = t[i];
+                continue;
+            }
+
+            if (convert[s[i]] != t[i]) {
                 return false;
-            if (tASCII[t[i]] != -1 && tASCII[t[i]] != s[i])
-                return false;
-            sASCII[s[i]] = t[i];
-            tASCII[t[i]] = s[i];
+            }
         }
         return true;
     }
