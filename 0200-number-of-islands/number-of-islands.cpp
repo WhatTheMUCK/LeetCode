@@ -1,40 +1,47 @@
-bool island(vector<vector<int>> &field, vector<vector<int>> &visited, int i, int j){
-    visited[i][j] = 1;
-    if (field[i][j] == 0){
-        return false;
-    }
-    if (!visited[i + 1][j]){
-        island(field, visited, i + 1, j);
-    }
-    if (!visited[i - 1][j]){
-        island(field, visited, i - 1, j);
-    } 
-    if (!visited[i][j + 1]){
-        island(field, visited, i, j + 1);
-    }
-    if (!visited[i][j - 1]){
-        island(field, visited, i, j - 1);
-    }
-    return true;
-}
-
-
 class Solution {
 public:
+    //         {-1 0} 
+    // {0 -1}     x   {0, 1}
+    //          {1 0}  
+
+    // для row: -1 0 1 0
+    // для col:  0 1 0 -1
+    std::vector<int> rowOffset = {-1, 0, 1, 0}; 
+    std::vector<int> colOffset = {0, 1, 0, -1};
+    
+
+    void mark(const vector<vector<char>> & grid, vector<vector<bool>> & visited, int row, int col) {
+        int n = static_cast<int>(grid.size());
+        int m = static_cast<int>(grid[0].size());
+
+        if (row < 0 || col < 0 || row >= n || col >= m || visited[row][col] == true || grid[row][col] == '0') {
+            return;
+        }
+
+        visited[row][col] = true;
+        for (int k = 0; k < 4; ++k) {
+            mark(grid, visited, row + rowOffset[k], col + colOffset[k]);
+        }
+        return;
+    }
+
     int numIslands(vector<vector<char>>& grid) {
-        vector<vector<int>> visited(grid.size() + 2, vector<int>(grid[0].size() + 2, 0)), field(grid.size() + 2, vector<int>(grid[0].size() + 2, 0));
-        for (int i = 0; i < grid.size(); i++){
-            for (int j = 0; j < grid[0].size(); j++){
-                field[i + 1][j + 1] = grid[i][j] - '0';
-            }
-        }
+        int n = static_cast<int>(grid.size());
+        int m = static_cast<int>(grid[0].size());
+        std::vector<std::vector<bool>> visited(n, std::vector<bool>(m, false));
+        
         int answer = 0;
-        for (int i = 1; i <= grid.size(); i++){
-            for (int j = 1; j <= grid[0].size(); j++){
-                if (visited[i][j] == 0)
-                    answer += island(field, visited, i, j);
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (grid[i][j] == '0' || visited[i][j] == true) {
+                    continue;
+                }
+
+                ++answer;
+                mark(grid, visited, i, j);
             }
         }
+
         return answer;
     }
 };
