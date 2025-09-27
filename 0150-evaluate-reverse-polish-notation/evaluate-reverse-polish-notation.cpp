@@ -1,27 +1,31 @@
+#include <stack>
+
 class Solution {
 public:
     int evalRPN(vector<string>& tokens) {
-        stack<int> numbers;
-        int num1, num2;
-        for (int i = 0; i < tokens.size(); i++){
-            if (tokens[i] != "+" && tokens[i] != "-" && tokens[i] != "*" && tokens[i] != "/"){
-                numbers.push(stoi(tokens[i]));
+        std::stack<int> st;
+        for (const std::string & elem : tokens) {
+            int rhs, lhs;
+            if (elem == "+") {
+                rhs = st.top(); st.pop();
+                lhs = st.top(); st.pop();
+                st.push(lhs + rhs);
+            } else if (elem == "-") {
+                rhs = st.top(); st.pop();
+                lhs = st.top(); st.pop();
+                st.push(lhs - rhs);
+            } else if (elem == "*") {
+                rhs = st.top(); st.pop();
+                lhs = st.top(); st.pop();
+                st.push(lhs * rhs);
+            } else if (elem == "/") {
+                rhs = st.top(); st.pop();
+                lhs = st.top(); st.pop();
+                st.push(lhs / rhs);
             } else {
-                num2 = numbers.top();
-                numbers.pop();
-                num1 = numbers.top();
-                numbers.pop();
-                if (tokens[i] == "+"){
-                    numbers.push(num1 + num2);
-                } else if (tokens[i] == "-"){
-                    numbers.push(num1 - num2);
-                } else if (tokens[i] == "*"){
-                    numbers.push(num1 * num2);
-                } else if (tokens[i] == "/"){
-                    numbers.push(num1 / num2);
-                }
+                st.push(std::stoi(elem));
             }
         }
-        return numbers.top();
+        return st.top();
     }
 };
