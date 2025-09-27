@@ -1,73 +1,101 @@
+#include <vector>
+#include <unordered_map>
+
+struct MyListNode {
+    MyListNode() : val(-42) {
+        next = this;
+        prev = this;
+    }
+
+    MyListNode(int answer) : val(answer) {
+        next = this;
+        prev = this;
+    }
+
+    MyListNode(int answer, MyListNode * next_) : val(answer), next(next_) {
+        next_->prev = this;
+        prev = this;
+    }
+
+    MyListNode(int answer, MyListNode * prev_, MyListNode * next_) : val(answer), next(next_), prev(prev_) {
+        next_->prev = this;
+        prev_->next = this;
+    }
+
+    MyListNode(MyListNode * cur) : val(cur->val), next(cur->next), prev(cur->prev) {}
+
+    int val;
+    MyListNode * next;
+    MyListNode * prev;
+};
+
 class LRUCache {
 public:
-    class Node{
-        public:
-        int key, val;
-        Node* prev;
-        Node* next;
-
-        Node(int key, int val){
-            this->key = key;
-            this->val = val;
-        }
-    };
-
-    int cap;
-    Node* head = new Node(-1, -1);
-    Node* tail = new Node(-1, -1);
-    unordered_map<int, Node*> mp;
-
-    void addNode(Node* node){
-        Node* temp = head->next;
-
-        node->next = temp;
-        node->prev = head;
-
-        head->next = node;
-        temp->prev = node;
-    }
-
-    void delNode(Node* node){
-        Node* prevv = node->prev;
-        Node* nextt = node->next;
-
-        prevv->next = nextt;
-        nextt->prev = prevv;
-    }
-
-    LRUCache(int capacity) {
-        cap = capacity;
-        head->next = tail;
-        tail->prev = head;
+    LRUCache(int capacity) : cap(capacity) {
+        dummyTail = new MyListNode();
+        dummyHead = new MyListNode(-42, dummyTail);
     }
     
     int get(int key) {
-        if (mp.find(key) != mp.end()){
-            Node* temp = mp[key];
-            int ans = temp->val;
-            mp.erase(key);
-            delNode(temp);
-            addNode(temp);
-            mp[key] = head->next;
-            return ans;
-        } else {
+        if (!mp.contains(key)) {
             return -1;
         }
+        MyListNode * cur = mp[key];
+        int answer = cur->val;
+        
+        cur->prev->next = cur->next;
+        cur->next->prev = cur->prev;
+
+        mpReversed.erase(cur);
+        mp.erase(key);
+
+        cur = new MyListNode(answer, dummyHead, dummyHead->next);
+        mp[key] = cur;
+        mpReversed[cur] = key;
+
+        return answer;      
     }
     
     void put(int key, int value) {
-        if (mp.find(key) != mp.end()){
-            Node* temp = mp[key];
-            mp.erase(key);
-            delNode(temp);
-        } 
-        if (mp.size() == cap){
-            mp.erase(tail->prev->key);
-            delNode(tail->prev);
+        if (!mp.contains(key)) {
+            if (cap == 0) {
+                MyListNode * forDelete = dummyTail->prev;
+
+                forDelete->next->prev = forDelete->prev;
+                forDelete->prev->next = forDelete->next;
+
+                mp.erase(mpReversed[forDelete]);
+                mpReversed.erase(forDelete);
+            }
+
+            MyListNode * cur = new MyListNode(value, dummyHead, dummyHead->next);
+            mp[key] = cur;
+            mpReversed[cur] = key;
+
+            if (cap > 0) {
+                --cap;
+            }
+            return;
         }
-        addNode(new Node(key, value));
-        mp[key] = head->next;
+
+        MyListNode * cur = mp[key];
+
+        cur->prev->next = cur->next;
+        cur->next->prev = cur->prev;
+
+        mpReversed.erase(cur);
+
+        cur = new MyListNode(value, dummyHead, dummyHead->next);
+        mp[key] = cur;
+        mpReversed[cur] = key;
+        return;
     }
+
+    int cap;
+    MyListNode * dummyHead;
+    MyListNode * dummyTail;
+    std::unordered_map<int, MyListNode *> mp;
+    std::unordered_map<MyListNode *, int> mpReversed;
 };
 
 /**
