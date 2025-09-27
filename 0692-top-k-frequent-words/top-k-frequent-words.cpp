@@ -1,31 +1,21 @@
-bool cmp(pair<int, string> lhs, pair<int, string> rhs){
-    if (lhs.first == rhs.first){
-        return lhs.second < rhs.second;
-    }
-    return lhs.first > rhs.first;
-}
-
 class Solution {
 public:
     vector<string> topKFrequent(vector<string>& words, int k) {
-        unordered_map<string, int> mp;
-        for (string elem : words){
-            mp[elem]++;
+        std::unordered_map<std::string, int> mp;
+        for (const std::string & word : words) {
+            ++mp[word];
         }
 
-        vector<pair<int, string>> helper;
-        for (pair<string, int> elem : mp){
-            helper.push_back({elem.second, elem.first});
+        std::vector<std::pair<std::string, int>> helper(mp.begin(), mp.end());
+        std::sort(helper.begin(), helper.end(), [](const auto & lhs, const auto & rhs){
+            return std::tie(lhs.second, rhs.first) > std::tie(rhs.second, lhs.first);
+        });
+
+        std::vector<std::string> answer;
+        for (int i = 0; i < k; ++i) {
+            answer.push_back(helper[i].first);
         }
-        sort(helper.begin(), helper.end(), cmp);
-        // for (int i = 0; i < helper.size(); i++){
-        //     cout << helper[i].second << " ";
-        // }
-        vector<string> answer;
-        for (int i = 0; i < helper.size() && k > 0; i++){
-            k--;
-            answer.push_back(helper[i].second);
-        }
+
         return answer;
     }
 };
