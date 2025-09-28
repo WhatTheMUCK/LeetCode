@@ -1,34 +1,30 @@
 class Solution {
 public:
     vector<int> partitionLabels(string s) {
-        unordered_map<char, int> dict;
-        for (char elem : s){
-            dict[elem]++;
+        unordered_map<char, int> mpAll;
+        for (char letter : s) {
+            ++mpAll[letter];
+        }
+        int n = static_cast<int>(s.size());
+        vector<int> answer;
+        unordered_map<char, int> mpCur;
+        int r = 0, size = 0;
+        while (r < n) {
+            --mpAll[s[r]];
+            ++size;
+            mpCur[s[r]] = mpAll[s[r]];
+            if (mpCur[s[r]] == 0) {
+                mpCur.erase(s[r]);
+            }
+
+            if (mpCur.size() == 0) {
+                answer.push_back(size);
+                size = 0;
+            }
+
+            ++r;
         }
 
-        int l = 0, r = 1;
-        unordered_map<char, int> temp;
-        int total = dict[s[l]] - 1;
-        temp[s[l]] = total;
-        vector<int> answer;
-        while (l < s.size()){
-            if (total == 0){
-                answer.push_back(r - l);
-                l = r;
-                r = l + 1;
-                temp[s[l]] = dict[s[l]] - 1;
-                total += temp[s[l]];
-            } else {
-                if (temp.find(s[r]) == temp.end()){
-                    temp[s[r]] = dict[s[r]] - 1;
-                    total += temp[s[r]]; 
-                } else {
-                    temp[s[r]]--;
-                    total--;
-                }
-                r++;
-            }
-        }
         return answer;
     }
 };
