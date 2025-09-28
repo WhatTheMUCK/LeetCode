@@ -1,19 +1,33 @@
+#include <vector>
+
+vector<int> dp(1e4 + 1, -1);
+vector<int> squares;
+
 class Solution {
 public:
-    int numSquares(int n) {
-        std::vector<int> dp(n + 1, 0);
-        dp[0] = 0;
-        dp[1] = 1;
-
-        for (int i = 2; i <= n; ++i) {
-            int min_squares = INT_MAX;
-            for (int j = 1; j * j <= i; ++j) {
-                int remaining = i - j * j;
-                min_squares = std::min(min_squares, dp[remaining]);
-            }
-            dp[i] = min_squares + 1;
+    int calculate(int n) {
+        if (dp[n] != -1) {
+            return dp[n];
         }
 
+        if (n == 0) {
+            dp[n] = 0;
+            return dp[n]; 
+        }
+
+        int temp = n;
+        int nSize = static_cast<int>(squares.size());
+        for (int i = 0; i < nSize && squares[i] <= n; ++i) {
+            temp = min(temp, calculate(n - squares[i]));
+        }
+        dp[n] = temp + 1;
         return dp[n];
+    }
+
+    int numSquares(int n) {
+        for (int i = 1; i * i <= n; ++i) {
+            squares.push_back(i * i);
+        }
+        return calculate(n);
     }
 };
