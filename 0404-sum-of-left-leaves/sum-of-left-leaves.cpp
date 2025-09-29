@@ -11,25 +11,19 @@
  */
 class Solution {
 public:
-    void leftLeaf(TreeNode* root, int &sum){
-        if (root == nullptr){
-            return;
+    int sumOfCorrectLeaves(TreeNode * root, bool isLeft) {
+        if (!root) {
+            return 0;
         }
-        TreeNode *left = root->left;
-        if (left == nullptr){
-            leftLeaf(root->right, sum);
-            return;
+
+        if (!root->left && !root->right && isLeft) {
+            return root->val;
         }
-        TreeNode *right = root->right;
-        if (left->left == nullptr && left->right == nullptr){
-            sum += left->val;
-        }
-        leftLeaf(root->left, sum);
-        leftLeaf(root->right, sum);
+
+        return sumOfCorrectLeaves(root->left, true) + sumOfCorrectLeaves(root->right, false);
     }
+
     int sumOfLeftLeaves(TreeNode* root) {
-        int answer = 0;
-        leftLeaf(root, answer);
-        return answer;
+        return sumOfCorrectLeaves(root, false);
     }
 };
