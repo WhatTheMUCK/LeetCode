@@ -1,17 +1,23 @@
-
 class RecentCounter {
-    queue<int> q;
 public:
-    RecentCounter() {
-        
-    }
-    
-    int ping(int t) {
-         while (!q.empty() && q.front() < t - 3000)
+    RecentCounter() : gap(3000) {}
+
+    void clear(int curTime) {
+        while (!q.empty() && q.front() < curTime - gap) {
             q.pop();
+        }
+        return;
+    }
+
+    int ping(int t) {
         q.push(t);
+        clear(t);
+
         return q.size();
     }
+
+    queue<int> q;
+    int gap;
 };
 
 /**
