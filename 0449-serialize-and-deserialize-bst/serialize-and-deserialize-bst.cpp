@@ -12,58 +12,54 @@ public:
 
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        string s="";
-        if(!root){
-            return s;
+        if (!root) {
+            return "";
         }
-        queue<TreeNode*>q;
-        q.push(root);
-        while(!q.empty()){
-            TreeNode* node=q.front();
-            q.pop();
-            if(!node){
-                s+="#,";
-            }
-            else{
-                s+=to_string(node->val)+',';
-                q.push(node->left);
-                q.push(node->right);
-            }
+
+        return to_string(root->val) + " " + serialize(root->left) + " " + serialize(root->right);
+    }
+
+    void insert(TreeNode * root, int value) {
+        if (value < root->val && root->left == nullptr) {
+            root->left = new TreeNode(value);
+            return;
         }
-        return s;
+
+        if (value > root->val && root->right == nullptr) {
+            root->right = new TreeNode(value);
+            return;
+        }
+
+        if (value < root->val) {
+            insert(root->left, value);
+            return;
+        }
+
+        if (value > root->val) {
+            insert(root->right, value);
+            return;
+        }
+
+        return;
     }
 
     // Decodes your encoded data to tree.
     TreeNode* deserialize(string data) {
-        if(data.empty()){return NULL;}
-        string s="";
-        stringstream x(data);
-        getline(x, s, ',');
-        TreeNode* root=new TreeNode(stoi(s));
-        queue<TreeNode*>q;
-        q.push(root);
-        while(!q.empty()){
-            TreeNode* node=q.front();
-            q.pop();
-            getline(x, s, ',');
-            if(s=="#"){
-                node->left=NULL;
-            }
-            else{
-                TreeNode* lft=new TreeNode(stoi(s));
-                node->left=lft;
-                q.push(lft);
-            }
-            getline(x, s, ',');
-            if(s=="#"){
-                node->right=NULL;
-            }
-            else{
-                TreeNode* rgt=new TreeNode(stoi(s));
-                node->right=rgt;
-                q.push(rgt);
-            }
+        if (data.empty()) {
+            return nullptr;
         }
+
+        TreeNode * root;
+        stringstream input(data);
+
+        int curValue;
+        input >> curValue;
+        root = new TreeNode(curValue);
+
+        while (input >> curValue) {
+            insert(root, curValue);
+        }
+
         return root;
     }
 };
