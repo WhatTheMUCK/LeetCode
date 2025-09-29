@@ -16,37 +16,36 @@
  * };
  */
 
+int curLvl = 0;
+
 class NestedIterator {
 public:
-    queue<int> q;
     NestedIterator(vector<NestedInteger> &nestedList) {
-        NestedInteger n;
-        unravel(nestedList, q, n);
+        unravel(nestedList, q);
     }
-    
-    void unravel(vector<NestedInteger> &nestedList, queue<int>& q, NestedInteger n){
-        for (int i = 0; i < nestedList.size(); i++){
-            if (nestedList[i].isInteger()){
+
+    void unravel(vector<NestedInteger> & nestedList, queue<int> & q) {
+        for (int i = 0; i < nestedList.size(); ++i) {
+            if (nestedList[i].isInteger()) {
                 q.push(nestedList[i].getInteger());
-            }
-            else{
-                unravel(nestedList[i].getList(), q, n);
-                
+            } else {
+                unravel(nestedList[i].getList(), q);
             }
         }
-        return ;
+        return;
     }
     
     int next() {
-        int x = q.front();
+        int answer = q.front();
         q.pop();
-        return x;
-        
+        return answer;
     }
-    
+
     bool hasNext() {
        return !q.empty();        
     }
+
+    queue<int> q;
 };
 
 /**
