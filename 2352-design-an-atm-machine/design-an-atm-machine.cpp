@@ -1,38 +1,52 @@
+template <typename T>
+vector<T> & operator+=(vector<T> & lhs, const vector<T> & rhs) {
+    if (lhs.size() != rhs.size()) {
+        throw std::logic_error("Not equal sizes!");
+    }
+
+    for (int i = 0; i < lhs.size(); ++i) {
+        lhs[i] += rhs[i];
+    }
+
+    return lhs;
+}
+
 class ATM {
 public:
-    unordered_map<int, int> dollars;
-    vector<int> values = {20, 50, 100, 200, 500};
     ATM() {
-        
+        banknotes = {0,  0,  0,   0,   0};
+        values =    {20, 50, 100, 200, 500};
     }
     
     void deposit(vector<int> banknotesCount) {
-        for (int i = 0; i < banknotesCount.size(); i++){
-            dollars[values[i]] += banknotesCount[i];
+        for (size_t i = 0; i < banknotesCount.size(); ++i) {
+            banknotes[i] += banknotesCount[i];
         }
+        return;
     }
     
     vector<int> withdraw(int amount) {
-        vector<int> temp = {0, 0, 0, 0, 0};
-        for (int i = values.size() - 1; i >= 0; i--){
-            if (dollars[values[i]] > 0){
-                int minus = min(amount / values[i], dollars[values[i]]);
-                temp[i] += minus;
-                amount -= minus * values[i];
+        vector<int> tmp = {0, 0, 0, 0, 0};
+        int n = banknotes.size();
+        for (int i = n - 1; i >= 0; --i) {
+            if (amount / values[i] > 0 && banknotes[i] > 0) {
+                int curBancknotes = min((amount / values[i]), banknotes[i]);
+                amount -= curBancknotes * values[i];
+                tmp[i] += curBancknotes;
+                banknotes[i] -= curBancknotes;
             }
         }
-        for (int i = 0; i < temp.size(); i++){
-            if (dollars[values[i]] < temp[i]){
-                return {-1};
-            }
-        }
-        if (amount > 0)
+
+        if (amount != 0) {
+            banknotes += tmp;
             return {-1};
-        for (int i = 0; i < temp.size(); i++){
-            dollars[values[i]] -= temp[i];
         }
-        return temp;
+
+        return tmp;
     }
+
+    vector<int> banknotes;
+    vector<int> values;
 };
 
 /**
