@@ -1,17 +1,25 @@
 class Solution {
 public:
     int firstUniqChar(string s) {
-        vector<int> letter('z' - 'a' + 1, INT_MAX);
-        for (int i = 0; i < s.size(); i++){
-            if (letter[s[i] - 'a'] == INT_MAX)
-                letter[s[i] - 'a'] = i;
-            else if (letter[s[i] - 'a'] != INT_MAX - 1){
-                letter[s[i] - 'a'] = INT_MAX - 1;
+        unordered_map<char, pair<int,int>> mp;
+        for (size_t i = 0; i < s.size(); ++i) {
+            char letter = s[i];
+            if (!mp.contains(letter)){
+                mp[letter] = {1, i};
+            } else {
+                ++mp[letter].first;
             }
         }
-        int minInd = *min_element(letter.begin(), letter.end());
-        if (minInd < INT_MAX - 1)
-            return minInd;
-        return -1;
+
+        int n = static_cast<int>(s.size());
+        int answerPos = n;
+        for (auto [letter, info] : mp) {
+            if (info.first != 1) {
+                continue;
+            }
+            answerPos = min(answerPos, info.second);
+        }
+
+        return (answerPos == n ? -1 : answerPos);
     }
 };
