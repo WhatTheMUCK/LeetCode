@@ -10,17 +10,21 @@
 class Solution {
 public:
     int guessNumber(int n) {
-        int l = 1, r = n, m;
-        while (l <= r){
-            m = (1ll * l + r) / 2;
+        long long l = 1, r = n + 1ll;
+        while (l < r) {
+            long long m = (l + r) / 2;
             int answer = guess(m);
-            if (answer == 0)
+            if (answer == 0) {
                 return m;
-            if (answer == -1)
+            }
+
+            if (answer == -1) { // m > pick
                 r = m - 1;
-            else if (answer == 1)
+            } else {
                 l = m + 1;
+            }
         }
+
         return l;
     }
 };
