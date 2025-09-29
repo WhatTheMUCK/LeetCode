@@ -1,14 +1,16 @@
 class Solution {
 public:
     int subarraysDivByK(vector<int>& nums, int k) {
-        vector<int> mp(k);
-        int pref = 0, answer = 0;
+        int curPrefixSum = 0;
+        unordered_map<int, int> mp;
         mp[0] = 1;
-        for (int i = 0; i < nums.size(); i++){
-            pref += nums[i];
-            answer += mp[((pref % k) + k) % k];
-            mp[((pref % k) + k) % k]++;
+        int answer = 0;
+        for (size_t i = 0; i < nums.size(); ++i) {
+            curPrefixSum = (((curPrefixSum + nums[i]) % k) + k) % k;
+            answer += mp[curPrefixSum];
+            ++mp[curPrefixSum];
         }
+
         return answer;
     }
 };
