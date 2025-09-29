@@ -1,18 +1,20 @@
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
-        vector<int> answer;
-        int l = 0, r = nums.size() - 1;
-        while (l <= r){
-            if (abs(nums[l]) > abs(nums[r])){
-                answer.push_back(nums[l] * nums[l]);
-                l++;
+        deque<int> dq;
+        int l = 0, r = static_cast<int>(nums.size()) - 1;
+        while (l < r) {
+            int lValue = nums[l] * nums[l], rValue = nums[r] * nums[r];
+            if (lValue > rValue) {
+                dq.push_front(lValue);
+                ++l;
             } else {
-                answer.push_back(nums[r] * nums[r]);
-                r--;
+                dq.push_front(rValue);
+                --r;
             }
         }
-        reverse(answer.begin(), answer.end());
-        return answer;
+        dq.push_front(nums[l] * nums[l]);
+
+        return vector<int>(dq.begin(), dq.end());
     }
 };
