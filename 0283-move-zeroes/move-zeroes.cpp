@@ -1,17 +1,12 @@
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
-        int curInd = 0, r = 0, n = static_cast<int>(nums.size());
-        for (; r < n; ++r) {
-            if (nums[r] == 0) {
-                continue;
+        int curInd = 0;
+        for (size_t i = 0; i < nums.size(); ++i) {
+            if (nums[i] != 0) {
+                swap(nums[curInd], nums[i]);
+                ++curInd;
             }
-            nums[curInd] = nums[r];
-            ++curInd;
-        }
-
-        for (; curInd < n; ++curInd) {
-            nums[curInd] = 0;
         }
         return;
     }
