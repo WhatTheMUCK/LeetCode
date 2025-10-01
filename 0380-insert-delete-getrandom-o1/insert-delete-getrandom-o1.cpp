@@ -1,33 +1,43 @@
+#include <random>
+
 class RandomizedSet {
-    vector<int> elems;
-    unordered_map<int, int> dictionary;
 public:
-    RandomizedSet() {   
-    }
+    RandomizedSet() {}
     
     bool insert(int val) {
-        if (dictionary.find(val) != dictionary.end()){
+        if (mp.contains(val)) {
             return false;
         }
-        elems.push_back(val);
-        dictionary[val] = elems.size() - 1;
+
+        mp[val] = valHolder.size();
+        valHolder.push_back(val);
         return true;
     }
     
     bool remove(int val) {
-        if (dictionary.find(val) == dictionary.end()){
+        if (!mp.contains(val)) {
             return false;
         }
-        elems[dictionary[val]] = elems.back();
-        elems.pop_back();
-        dictionary[elems[dictionary[val]]] = dictionary[val];
-        dictionary.erase(val);
+
+        int curIndex = mp[val];
+        mp.erase(val);
+
+        int n = static_cast<int>(valHolder.size());
+        if (curIndex != n - 1) {
+            mp[valHolder.back()] = curIndex;
+            swap(valHolder[curIndex], valHolder.back());
+        }
+
+        valHolder.pop_back();
         return true;
     }
     
     int getRandom() {
-        return elems[rand() % elems.size()];
+        return valHolder[rand() % valHolder.size()]; 
     }
+
+    unordered_map<int, int> mp;
+    vector<int> valHolder;
 };
 
 /**
